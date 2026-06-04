@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>איזה בית הוגוורטס אתם?</title>
+
+<style>
+
+body{
+    font-family:Arial, sans-serif;
+    text-align:center;
+    background:#eaf6ff;
+    padding:20px;
+}
+
+#question{
+    font-size:28px;
+    margin-bottom:20px;
+}
+
+button{
+    padding:12px 20px;
+    margin:8px;
+    font-size:18px;
+    cursor:pointer;
+    border-radius:10px;
+}
+
+.answer{
+    display:block;
+    margin:10px auto;
+}
+
+.heroImage{
+    width:300px;
+    border-radius:20px;
+}
+
+.powerImages{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.powerImages img{
+    width:180px;
+    height:180px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+.restart{
+    margin-top:30px;
+    font-size:20px;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>🦸 איזה בית הוגוורטס אתם? 🦸</h1>
+
+<div id="game"></div>
+
+<script>
+
+/* =====================================================
+   אזור 1 - הבתים
+   הילדים יכולים לשנות שמות, תמונות וכוחות
+   ===================================================== */
+
+let heroes = {
+
+
+fire:{
+name:"סליתרין!",
+image:"https://he.wikipedia.org/wiki/%D7%A1%D7%9C%D7%99%D7%AA%27%D7%A8%D7%99%D7%9F",
+power1:"https://static.wixstatic.com/media/f80bd7_a58ed1a609544eb484a64b1a848ebedc~mv2_d_5024_3349_s_4_2.jpg/v1/fill/w_568,h_378,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/f80bd7_a58ed1a609544eb484a64b1a848ebedc~mv2_d_5024_3349_s_4_2.jpg",
+power2:"https://static.wikia.nocookie.net/harrypotterheb/images/6/6e/Slytherin.jpg/revision/latest/scale-to-width-down/250?cb=20131108160826&path-prefix=he",
+description:"טובי לב."
+},
+
+ice:{
+name:"!רייבינקלו",
+image:"https://ynet-pic1.yit.co.il/PicServer5/2021/06/13/10768818/shutterstock_305273708.jpg",
+power1:"https://upload.wikimedia.org/wikipedia/commons/9/9f/Blason_Serdaigle.svg",
+power2:"https://static.wikia.nocookie.net/harrypotterheb/images/b/bf/HelenaR.jpg/revision/latest/scale-to-width-down/250?cb=20120320233454&path-prefix=he",
+description:"חכמים ומתנשאים."
+},
+
+lightning:{
+name:"!הפלפאף",
+image:"https://d2y8lrt1ygofia.cloudfront.net/hqo9jsverhxs16eri66s1fnsd3q3",
+power1:"https://static.wikia.nocookie.net/harrypotterheb/images/e/e4/Hufflepuff.jpg/revision/latest/scale-to-width-down/250?cb=20131106111743&path-prefix=he",
+power2:"https://static.wikia.nocookie.net/harrypotterheb/images/9/9c/%D7%94%D7%9C%D7%92%D7%94_%D7%94%D7%A4%D7%9C%D7%A4%D7%90%D7%A3.jpg/revision/latest?cb=20171020141234&path-prefix=he",
+description:"נפשם אפלה כמו שייק עם קצפת"
+}
+
+};
+
+
+/* =====================================================
+   אזור 2 - שאלות
+   ===================================================== */
+
+let questions = [
+
+{
+q:"איך אתה מתחיל את היום שלך?",
+answers:[
+["בקללת סקטומספרה טובה למישהו","fire"],
+["עם ספר","ice"],
+["עם שוקו חם","lightning"]
+]
+},
+
+{
+q:"אם סנייפ היה מת מולכם, מה הייתם עושים??",
+answers:[
+["לא בוכים, אבל מצטערים ממש","fire"],
+["המעשה הנכון יהיה לברוח","ice"],
+["וואאאההההה","lightning"]
+]
+},
+
+{
+q:"איך היית נלחם בוולדמורט?",
+answers:[
+["אני לא, כי זה הבוס","fire"],
+["חידון טריוויה","ice"],
+["לא.","lightning"]
+]
+}
+
+];
+
+
+/* =====================================================
+   משתני משחק
+   ===================================================== */
+
+let fire;
+let ice;
+let lightning;
+let step;
+
+
+/* =====================================================
+   התחלת משחק
+   ===================================================== */
+
+function startGame(){
+
+fire = 0;
+ice = 0;
+lightning = 0;
+
+step = 0;
+
+showQuestion();
+
+}
+
+
+/* =====================================================
+   הצגת שאלה
+   ===================================================== */
+
+function showQuestion(){
+
+let q = questions[step];
+
+let html = `
+<div id="question">${q.q}</div>
+`;
+
+for(let i=0;i<q.answers.length;i++){
+
+html += `
+<button class="answer"
+onclick="choose('${q.answers[i][1]}')">
+${q.answers[i][0]}
+</button>
+`;
+
+}
+
+document.getElementById("game").innerHTML = html;
+
+}
+
+
+/* =====================================================
+   בחירת תשובה
+   ===================================================== */
+
+function choose(type){
+
+if(type=="fire"){
+fire++;
+}
+
+if(type=="ice"){
+ice++;
+}
+
+if(type=="lightning"){
+lightning++;
+}
+
+step++;
+
+if(step < questions.length){
+
+showQuestion();
+
+}
+else{
+
+showResult();
+
+}
+
+}
+
+
+/* =====================================================
+   הצגת תוצאה
+   ===================================================== */
+
+function showResult(){
+
+let winner = "fire";
+
+if(ice > fire && ice > lightning){
+winner = "ice";
+}
+
+if(lightning > fire && lightning > ice){
+winner = "lightning";
+}
+
+let hero = heroes[winner];
+
+document.getElementById("game").innerHTML =
+
+`
+<h2> הבית שלך הוא...:</h2>
+
+<h1>${hero.name}</h1>
+
+<img class="heroImage"
+src="${hero.image}">
+
+<h3>${hero.description}</h3>
+
+<h2>הבית שלך</h2>
+
+<div class="powerImages">
+
+<img src="${hero.power1}">
+
+<img src="${hero.power2}">
+
+</div>
+
+<button class="restart"
+onclick="startGame()">
+🔄 חזרה להתחלה
+</button>
+`;
+
+}
+
+
+/* =====================================================
+   התחלת המשחק בעת פתיחת הדף
+   ===================================================== */
+
+startGame();
+
+</script>
+
+</body>
+</html>
